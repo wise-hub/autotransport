@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  autotransport:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8085:8085"
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./bin/autotransport:/usr/local/bin/autotransport
+      - ./static:/root/static
+      - ./ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+    entrypoint: ["sh", "-c", "pg_ctl start -D /var/lib/postgresql/data && /app/autotransport"]
+
+volumes:
+  db_data:
+    driver: local

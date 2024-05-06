@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Booking Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Car Booking Dashboard</h1>
+    </header>
+    <main>
+        <div class="container">
+            <table id="dashboard">
+                <thead>
+                    <tr>
+                        <th>Car Model</th>
+                        <th>Department</th>
+                        <th>Usage Date</th>
+                        <th>Destination</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        fetch('/api/bookings')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#dashboard tbody');
+                data.forEach(car => {
+                    car.bookings.forEach(booking => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${car.car_model}</td><td>${booking.department}</td><td>${booking.usage_date}</td><td>${booking.destination}</td>`;
+                        tbody.appendChild(row);
+                    });
+                });
+            });
+    </script>
+</body>
+</html>
