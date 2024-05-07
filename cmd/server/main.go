@@ -99,7 +99,19 @@ func main() {
 	r.Put("/api/bookings/{id}", api.UpdateBookingByID)
 	r.Delete("/api/bookings/{id}", api.DeleteBooking)
 
-	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	r.Get("/web/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./web/dashboard.html")
+	})
+
+	r.Get("/web/trips", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./web/trips.html")
+	})
+
+	r.Get("/web/cars", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./web/cars.html")
+	})
+
+	r.Handle("/web/*", http.StripPrefix("/web/", http.FileServer(http.Dir("./web"))))
 
 	if err := http.ListenAndServe(":8085", r); err != nil {
 		panic(fmt.Sprintf("Failed to start server: %v", err))

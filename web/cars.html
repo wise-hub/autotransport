@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars | Autotransport</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header>
+        <h1>Cars</h1>
+    </header>
+    <main>
+        <button onclick="goHome()">Home</button>
+        <div class="container" id="carList"></div>
+        <button id="addCarButton">Add Car</button>
+        <form id="editCarForm" style="display: none;">
+            <input type="text" id="editCarName" placeholder="Car Name">
+            <input type="hidden" id="editCarId">
+            <button type="button" onclick="updateCarModel()">Save</button>
+            <button type="button" onclick="hideEditForm()">Cancel</button>
+        </form>
+    </main>
+    <script>
+        function goHome() {
+            window.location.href = '/autotransport/'; 
+        }
+        async function fetchCarModels() {
+            const response = await fetch('api/cars');
+            const carModels = await response.json();
+            const carListDiv = document.getElementById('carList');
+            carListDiv.innerHTML = '';
+            carModels.forEach(carModel => {
+                const carDiv = document.createElement('div');
+                carDiv.textContent = carModel.name;
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => showEditForm(carModel.id, carModel.name);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteCarModel(carModel.id);
+                carDiv.appendChild(editButton);
+                carDiv.appendChild(deleteButton);
+                carListDiv.appendChild(carDiv);
+            });
+        }
+
+        window.onload = fetchCarModels;
+
+        document.getElementById('addCarButton').addEventListener('click', () => {
+            const newCarName = prompt('Enter the name of the new car:');
+            if (newCarName) {
+                fetch('api/cars', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: newCarName })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        fetchCarModels();
+                    } else {
+                        alert('Failed to add car model');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding car model:', error);
+                    alert('Error adding car model');
+                });
+            }
+        });
+
+        function showEditForm(carId, carName) {
+            document.getElementById('editCarForm').style.display = 'block';
+            document.getElementById('editCarName').value = carName;
+            document.getElementById('editCarId').value = carId;
+        }
+
+        function hideEditForm() {
+            document.getElementById('editCarForm').style.display = 'none';
+        }
+
+        function updateCarModel() {
+            const carId = document.getElementById('editCarId').value;
+            const newName = document.getElementById('editCarName').value;
+            fetch(`api/cars/${carId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newName })
+            })
+            .then(response => {
+                if (response.ok) {
+                    fetchCarModels();
+                    hideEditForm();
+                } else {
+                    alert('Failed to edit car model');
+                }
+            })
+            .catch(error => {
+                console.error('Error editing car model:', error);
+                alert('Error editing car model');
+            });
+        }
+
+        function deleteCarModel(carId) {
+            const confirmDelete = confirm('Are you sure you want to delete this car model?');
+            if (confirmDelete) {
+                fetch(`api/cars/${carId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        fetchCarModels();
+                    } else {
+                        alert('Failed to delete car model');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting car model:', error);
+                    alert('Error deleting car model');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
