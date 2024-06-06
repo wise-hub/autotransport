@@ -10,9 +10,6 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/autotransport-data
-      - ./bin/autotransport:/app/autotransport
-      - ./web:/app/web
-      - ./ddl.sql:/app/ddl.sql
     entrypoint: ["sh", "-c", "pg_ctl start -D /var/lib/postgresql/autotransport-data && /app/autotransport"]
 
 volumes:

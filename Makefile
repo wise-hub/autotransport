@@ -10,7 +10,7 @@ clean:
 build_app: clean
 	@echo "Building Go application..."
 	mkdir -p $(BINARY_DIR)
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ./$(BINARY_DIR)/$(APP_NAME) ./cmd/server/main.go
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ./$(BINARY_DIR)/$(APP_NAME) ./cmd/main.go
 
 build_image: build_app
 	@echo "Building Docker image with PostgreSQL Alpine..."

@@ -2,43 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | Autotransport</title>
+    <title>Табло</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <header>
-        <h1>Dashboard</h1>
+        <h1>Табло</h1>
     </header>
     <main>
-        <button onclick="goHome()">Home</button>
+        <button class="btn-primary" onclick="goHome()">Начало</button>
         <div class="container">
-            <table id="dashboard">
-                <thead>
-                    <tr>
-                        <th>Car Model</th>
-                        <th>Department</th>
-                        <th>Usage Date</th>
-                        <th>Destination</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <ul id="car-tree" class="car-tree"></ul>
         </div>
     </main>
     <script>
         function goHome() {
-            window.location.href = '/autotransport/'; 
+            window.location.href = '/web/';
         }
-        fetch('api/bookings')
+
+        fetch('/api/bookings')
             .then(response => response.json())
             .then(data => {
-                const tbody = document.querySelector('#dashboard tbody');
+                const carTree = document.querySelector('#car-tree');
                 data.forEach(car => {
-                    car.bookings.forEach(booking => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `<td>${car.car_model}</td><td>${booking.department}</td><td>${booking.usage_date}</td><td>${booking.destination}</td>`;
-                        tbody.appendChild(row);
+                    const carNode = document.createElement('li');
+                    carNode.classList.add('car-item');
+                    carNode.innerHTML = `<span class="car-model">${car.car_model}</span>`;
+
+                    const bookingList = document.createElement('ul');
+                    bookingList.classList.add('booking-list');
+
+                    car.bookings.forEach((booking, index) => {
+                        const bookingNode = document.createElement('li');
+                        bookingNode.classList.add('booking-item');
+                        bookingNode.innerHTML = `<span>Trip ${index + 1}:</span> <span>Department: ${booking.department}</span>, <span>Usage Date: ${booking.usage_date}</span>, <span>Destination: ${booking.destination}</span>`;
+                        bookingList.appendChild(bookingNode);
                     });
+
+                    carNode.appendChild(bookingList);
+                    carTree.appendChild(carNode);
                 });
             });
     </script>
