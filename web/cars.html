@@ -8,10 +8,12 @@
 </head>
 <body>
     <header>
-        <h1>Автомобили</h1>
+        <div class="header-container">
+            <h1>Автомобили</h1>
+            <a href="./" class="button">Начало</a>
+        </div>
     </header>
     <main>
-        <button class="btn-primary" onclick="goHome()">Начало</button>
         <div class="container">
             <table id="carList" class="azure-table">
                 <thead>
@@ -21,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Car models will be populated here -->
+                   
                 </tbody>
             </table>
         </div>
@@ -34,9 +36,6 @@
         </form>
     </main>
     <script>
-        function goHome() {
-            window.location.href = '/web/'; 
-        }
         async function fetchCarModels() {
             const response = await fetch('/api/cars');
             const carModels = await response.json();

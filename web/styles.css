@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #0078D4;
+    background-color: #003366;
     color: #ffffff;
     padding: 10px 0;
     text-align: center;
@@ -18,6 +18,20 @@ header h1 {
     margin: 0;
     font-size: 2em;
     font-weight: 400;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-container h1 {
+    margin: 0 0 0 100px;
+}
+
+.header-container .button {
+    margin-left: auto;
 }
 
 main {
@@ -31,37 +45,37 @@ main {
 .container {
     width: 100%;
     background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
     padding: 20px;
     margin: 10px 0;
+    border: 1px solid #e1e1e1;
 }
 
-button {
-    background-color: #0078D4;
+button, .button {
+    background-color: #005a9e;
     color: #ffffff;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    border-radius: 6px;
     font-size: 1em;
     margin: 10px 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
-button:hover {
-    background-color: #005a9e;
-}
-
-button:active {
+button:hover, .button:hover {
     background-color: #004577;
+}
+
+button:active, .button:active {
+    background-color: #003366;
 }
 
 input[type="text"], input[type="date"], select {
     width: 90%;
     padding: 12px;
     margin: 15px auto;
-    border: 2px solid #c8c6c4;
-    border-radius: 6px;
+    border: 1px solid #c8c6c4;
     box-sizing: border-box;
     font-size: 1.1em;
     transition: border-color 0.2s ease;
@@ -69,43 +83,30 @@ input[type="text"], input[type="date"], select {
 }
 
 input[type="text"]:focus, input[type="date"]:focus, select:focus {
-    border-color: #0078D4;
+    border-color: #005a9e;
     outline: none;
 }
 
 form {
     background-color: #ffffff;
-    border-radius: 8px;
     padding: 20px;
     width: 80%;
     margin: 30px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid #e1e1e1;
 }
 
 .form-hidden {
     display: none;
 }
 
-.car-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2em;
-    color: #0078D4;
-}
-
 .azure-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 1em;
+    border: 1px solid #e1e1e1;
 }
 
 .azure-table th, .azure-table td {
@@ -121,6 +122,15 @@ form {
     text-transform: uppercase;
 }
 
+.azure-table .car-column {
+    width: 350px;
+    font-weight: bold;
+}
+
+.azure-table .car-cell {
+    font-weight: bold;
+}
+
 .azure-table tbody tr:nth-child(even) {
     background-color: #f4f4f4;
 }
@@ -128,6 +138,37 @@ form {
 .azure-table tbody tr:hover {
     background-color: #eaeaea;
     cursor: pointer;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: #005a9e;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-icon:hover {
+    background-color: #004577;
+    color: #ffffff;
+}
+
+.btn-icon:active {
+    background-color: #003366;
+    color: #ffffff;
+}
+
+.btn-small {
+    padding: 3px 6px;
+    font-size: 0.9em;
+}
+
+.btn-icon i {
+    pointer-events: none; /* Ensures icons inside buttons are not clickable */
 }
 
 .main-cards {
@@ -140,7 +181,7 @@ form {
 
 .card {
     background-color: #ffffff;
-    border-radius: 8px;
+    border: 1px solid #e1e1e1;
     width: 25%;
     padding: 20px;
     text-align: center;
@@ -152,27 +193,6 @@ form {
     font-size: 1.5em;
 }
 
-.button {
-    display: inline-block;
-    background-color: #0078D4;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-    font-size: 1.1em;
-    text-decoration: none;
-    margin-top: 15px;
-}
-
-.button:hover {
-    background-color: #005a9e;
-}
-
-.button:active {
-    background-color: #004577;
-}
-
 ul.car-tree {
     list-style: none;
     padding-left: 0;
@@ -182,15 +202,14 @@ ul.car-tree {
 .car-item {
     margin-bottom: 1em;
     background-color: #ffffff;
-    border: 2px solid #e1e1e1;
-    border-radius: 8px;
+    border: 1px solid #e1e1e1;
     padding: 15px;
 }
 
 .car-model {
     font-weight: 600;
     font-size: 1.5em;
-    color: #0078D4;
+    color: #005a9e;
 }
 
 ul.booking-list {
@@ -204,5 +223,5 @@ ul.booking-list {
     margin-top: 8px;
     padding: 8px;
     border: 1px solid #c8c6c4;
-    border-radius: 6px;
+    border-radius: 0;
 }

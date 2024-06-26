@@ -44,7 +44,9 @@ func SetDB(database *pgxpool.Pool) {
 func GetBookings(w http.ResponseWriter, r *http.Request) {
 	query := `SELECT cm.name, b.id, b.car_model_id, b.department, b.usage_date, b.destination
 		FROM bookings b
-		JOIN car_models cm ON cm.id = b.car_model_id where b.deleted = false`
+		JOIN car_models cm ON cm.id = b.car_model_id 
+		WHERE b.deleted = FALSE 
+		ORDER BY cm.name, b.usage_date`
 	rows, err := db.Query(context.Background(), query)
 	if err != nil {
 		http.Error(w, "Unable to retrieve bookings", http.StatusInternalServerError)
@@ -52,7 +54,7 @@ func GetBookings(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var carBookings []CarBooking
+	carBookingsMap := make(map[string]*CarBooking)
 
 	for rows.Next() {
 		var carModel string
@@ -64,7 +66,20 @@ func GetBookings(w http.ResponseWriter, r *http.Request) {
 		}
 
 		booking.CarModelName = carModel
-		carBookings = append(carBookings, CarBooking{CarModel: carModel, Bookings: []Booking{booking}})
+
+		if carBooking, exists := carBookingsMap[carModel]; exists {
+			carBooking.Bookings = append(carBooking.Bookings, booking)
+		} else {
+			carBookingsMap[carModel] = &CarBooking{
+				CarModel: carModel,
+				Bookings: []Booking{booking},
+			}
+		}
+	}
+
+	var carBookings []CarBooking
+	for _, carBooking := range carBookingsMap {
+		carBookings = append(carBookings, *carBooking)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
